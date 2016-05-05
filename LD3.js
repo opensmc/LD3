@@ -480,6 +480,7 @@ GeoApp.prototype.processLayerRecord = function(d)
   d.layer_obj = new L.geoJson(null, options)
   this.extra_layers[d.name] = d
   this.layer_control.addOverlay(this.extra_layers[d.name].layer_obj, d.name);
+  addTreeNode(null, d.id, d.name, this, d.name, treeSelectionCallback);
 }
 
 GeoApp.prototype.loadLayers_cb = function(error, data) {
@@ -784,5 +785,25 @@ GeoApp.prototype.removeLegend = function(obj)
   var legend_div = d3.select("#legend_div div."+layer_id)
   legend_div.remove()
 }
+
+function setCookie(cname, cvalue) {
+    document.cookie = cname + "=" + cvalue + "; ";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
 
 
