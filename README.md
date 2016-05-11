@@ -12,7 +12,7 @@ and shape_sampledata. (Note that if you have Javascript disabled
 in your browser, you'll need to enable it.)
 
 And you'll need a (minimal) web server, running in this directory.
-Open a command line and change to the directory where LD3.html is.
+Open a command line and change to the directory where index.html is.
 Then use one of these two recommended choices for a basic web server:
 
 * If you have python3, use the built-in web server:
@@ -21,7 +21,7 @@ Then use one of these two recommended choices for a basic web server:
   http-server
 
 Once you've run one of these commands, point your browser to
-http://localhost:8080/LD3.html and you should see a map --- if you're 
+http://localhost:8080/index.html and you should see a map --- if you're 
 online. If you are not online, see the 'Working Offline' section below.
 
 There will be a layer-picker at the top-right, and you can use that
