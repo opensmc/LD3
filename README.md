@@ -31,6 +31,23 @@ For point-layers, the Maki icons are recommended. Get them from
 https://github.com/mapbox/maki.
 
 
+# More Advanced Use
+
+Greg Gladman has contributed a pretty nice layer-picker control
+for the left-hand pane that will grow into a tree-based menu. 
+It's currenly a bit rough (no menu hierarchy yet, and the layers
+must also be in the leaflet control), but it's worth a look. To use
+this, make sure your page contains a Treeview object 
+("tv = new Treeview('menudiv')") and pass the Treeview to the
+GeoApp as "ga = new GeoApp({tv:tv})").
+
+To use the Treeview, you'll need jQWidgets, which are available
+from jQWidgets.com, but not as a CDN. Note that jQWidgets is
+available under the Creative Commons Attribution-NonCommercial for
+for non-commercial use, but for commercial use, you must contact
+http://www.jqwidgets.com/license/ to buy a license.
+
+
 # Changing Icons (Point Layers Only)
 
 Point data shows discrete points on a map, like the location of a
@@ -259,7 +276,16 @@ the local versions.
 Again, you won't be able to see the base maps.
 
 
-# Changes
+# Notable Changes
+
+
+2016-05-10:
+* Incorporated Greg Gladman's Treeview. Thanks, Greg!
+* Moved initialization options for GeoApp into an object,
+  to avoid long positional argument lists.
+* Preliminary stubs for connecting Treeview to translations.
+* Have a small survey for OpenSMC.
+
 
 2016-04-12: 
 * renamed geom_type:value column to geomType:value, and made it required.

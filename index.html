@@ -65,47 +65,14 @@
 			$("#surveypopup").hide();
 		}
 
-		function addTreeNode(parentNode, id, name, app, layerId, callback) {
-			var itemData = new Object();
-			itemData.id   = id;
-			itemData.name = name;
-			itemData.url  = 'http://datasource.xyz/' + id;
-			itemData.app = app;
-			itemData.layerId = layerId;
-			itemData.description = 'an item called "' + name + '" with the id "' + id + '"';
-
-			return treeview_addNode(parentNode, id, name, itemData, false, callback);
-		}
-
-		function treeSelectionCallback(id, data, selected) {
-			console.log('selected: ' + selected);
-			console.log(data.name);
-			data.app.map.addLayer(data.app.extra_layers[data.layerId]);
-		}	
-
-		ga = new GeoApp();
+                tv = new Treeview('jqxTree');
+		ga = new GeoApp({tv:tv});
 		ga.loadLayers();
-		treeview_init('jqxTree');
 
 		var surveyCookie = getCookie("showSurvey");
 		if (surveyCookie != "false") {
 			showSurvey();
 		}
-
-
-		/*
-		var parentTesting = addTreeNode(null, 'not_active', 'Tree not active yet.', null);
-		addTreeNode(parentTesting, 'but_soon', 'But hopefully soon', null);
-
-		var parentHousing = addTreeNode(null, 'housing', 'Housing', null);
-		addTreeNode(parentHousing, 'affordable', 'Affordable', treeSelectionCallback);
-		addTreeNode(parentHousing, 'senior', 'Senior', treeSelectionCallback);
-		var parentHousingValues = addTreeNode(parentHousing, 'value', 'Values', null);
-		addTreeNode(parentHousingValues, 'avgsales', 'Average Sale Values', treeSelectionCallback);
-		addTreeNode(parentHousingValues, 'avgrent', 'Average Rent', treeSelectionCallback);
-		*/
-
-		treeview_expandAll();
 
 	</script>
 
