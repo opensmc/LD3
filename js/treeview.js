@@ -1,24 +1,24 @@
 
 function Treeview(id)
 {
-  this.treeElementId = id;
-  this.app = null;
+	this.treeElementId = id;
+	this.app = null;
 
-  this.translations = {};
-  this.language = 'English';
-  this.navItems = [];
+	this.translations = {};
+	this.language = 'English';
+	this.navItems = [];
 
-  this.tree = $('#' + this.treeElementId).jqxTree({ checkboxes: true, hasThreeStates: true });
+	this.tree = $('#' + this.treeElementId).jqxTree({ checkboxes: true, hasThreeStates: true });
 
-  checkChange = this.checkChangeFactory(this)
-  $('#' + this.treeElementId).on('checkChange', checkChange);
+	checkChange = this.checkChangeFactory(this)
+	$('#' + this.treeElementId).on('checkChange', checkChange);
 }
 
 // Callback used by the app to tell the Treeview about the app
 // itself.
 Treeview.prototype.connectApp = function(app)
 {
-  this.app = app;
+	this.app = app;
 }
 
 // Callback used by the app to tell the Treeview the
@@ -28,7 +28,7 @@ Treeview.prototype.connectApp = function(app)
 // and translations['中文']['site_name'] === '网站名称'.
 Treeview.prototype.connectTranslations = function(translations)
 {
-  this.translations = translations;
+	this.translations = translations;
 }
 
 // Callback used by the app to tell the Treeview the user's
@@ -37,37 +37,37 @@ Treeview.prototype.connectTranslations = function(translations)
 // translation-testing.
 Treeview.prototype.languageChange = function(language)
 {
-  this.language = language;
-  // TODO: use translations and language to translate text...
+	this.language = language;
+	// TODO: use translations and language to translate text...
 }
 
 Treeview.prototype.checkChangeFactory = function(self)
 {
-  // Note use of 'self' in closure to capture the Treeview's 'this'.
-  return (function(event) {
-    var args = event.args;
-    var element = args.element;
-    var checked = args.checked;
-    var updatedNode = $('#' + self.treeElementId).jqxTree('getItem', element);
-    var id = updatedNode.id;
-  
-    $.each(self.navItems, function(key, value) {
-      if (value.id === updatedNode.id) {
-        if ((checked == true) && (updatedNode.selected == false)) {
-          updatedNode.selected = true;
-          if (self.app != null) {
-            self.app.addLayer(value);
-          }
-        }
-        else if ((checked == false) && (updatedNode.selected == true)) {
-          updatedNode.selected = false;
-          if (self.app != null) {
-            self.app.removeLayer(value);
-          }
-        }
-      }
-    });
-  });
+	// Note use of 'self' in closure to capture the Treeview's 'this'.
+	return (function(event) {
+		var args = event.args;
+		var element = args.element;
+		var checked = args.checked;
+		var updatedNode = $('#' + self.treeElementId).jqxTree('getItem', element);
+		var id = updatedNode.id;
+	
+		$.each(self.navItems, function(key, value) {
+			if (value.id === updatedNode.id) {
+				if ((checked == true) && (updatedNode.selected == false)) {
+					updatedNode.selected = true;
+					if (self.app != null) {
+						self.app.addLayer(value);
+					}
+				}
+				else if ((checked == false) && (updatedNode.selected == true)) {
+					updatedNode.selected = false;
+					if (self.app != null) {
+						self.app.removeLayer(value);
+					}
+				}
+			}
+		});
+	});
 }
 
 // Function used by the app to tell the treeview about another
@@ -76,36 +76,48 @@ Treeview.prototype.checkChangeFactory = function(self)
 // was: function(parentNode, id, name, data, selected, callback)
 Treeview.prototype.addNode = function(record)
 {
-  var itemData = new Object();
-  itemData.id   = record.id;
-  itemData.name = record.name;
-  itemData.url  = record.url; // was 'http://datasource.xyz/' + id;
-  itemData.layerId = record.name;
-  itemData.description = 'an item called "' + record.name + '" with the id "' + record.id + '"';
+	var navObj      = new Object();
+	navObj.id       = record.id;
+	navObj.name     = record.name;
+	navObj.selected = false; // everything starts un-selected. (Perhaps pull from an initiallySelected:value column in the record, if present?
+	this.navItems.push(navObj);
 
-  var navObj      = new Object();
-  navObj.id       = record.id;
-  navObj.name     = record.name;
-  navObj.data     = itemData;
-  navObj.selected = false; // everything starts un-selected. (Perhaps pull from an initiallySelected:value column in the record, if present?
-  this.navItems.push(navObj);
+	var parentPath = record.parent;
+	if (parentPath) {
+		var parentNodes = parentPath.split("::");
+		var currentParentNode = null;
+        var self = this;
+		$.each(parentNodes, function(key, nodeName) {      
+			var existingParentElement = $("#" + nodeName)[0];
+			var existingParentNode = $('#' + self.treeElementId).jqxTree('getItem', existingParentElement);
+			if (existingParentNode == null) {
+				$('#' + self.treeElementId).jqxTree('addTo', {id: nodeName, label: nodeName}, currentParentNode);
+				var newElement = $("#" + nodeName)[0];
+				var newNode = $('#' + self.treeElementId).jqxTree('getItem', newElement);
+				currentParentNode = newNode;
+			} else {
+				currentParentNode = existingParentNode;
+			}
 
-  var parentNode = null;
-  $('#' + this.treeElementId).jqxTree('addTo', {id: record.id, label: record.name}, parentNode);
-  var element = $("#" + record.id)[0];
-  var newNode = $('#' + this.treeElementId).jqxTree('getItem', element);
-  return newNode;
+		});
+	}
+
+//  var parentNode = null;
+	$('#' + this.treeElementId).jqxTree('addTo', {id: record.id, label: record.name}, currentParentNode);
+	var element = $("#" + record.id)[0];
+	var newNode = $('#' + this.treeElementId).jqxTree('getItem', element);
+	return newNode;
 }
 
 // Callback the app uses to signal all the nodes have been loaded.
 Treeview.prototype.addComplete = function()
 {
-  this.expandAll();
+	this.expandAll();
 }
 
 Treeview.prototype.expandAll = function()
 {
-  $('#' + this.treeElementId).jqxTree('expandAll');
+	$('#' + this.treeElementId).jqxTree('expandAll');
 }
 
 
