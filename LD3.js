@@ -9,22 +9,48 @@
 
 registerHandlebarsFormatters()
 
-function GeoApp(map_div, base_layers, initial_base) {
-  if (typeof(map_div) === 'undefined') {
-    map_div = 'map_div'
+// Can pass in an optional Treeview as tv, which must be an object supporting
+// the following methods:
+//   connectApp(this)               // to register this app.
+//   connectTranslations(transmap)  // to accept a map of {lang:{key:text}}
+//   languageChange(lang)           // to respond to a change-of-language request
+//   addNode(obj-of-layer-row)      // to add a node for a layers.csv record
+//   addComplete()                  // for any processing once all nodes are added
+//
+// The treeview must in turn call GeoApp.addLayer({name:name}) or
+// GeoApp.removeLayer({name:name}) as appropriate.
+function GeoApp(options) {
+  if (typeof(options) === 'undefined') {
+    options = new Object();
   }
-  if (typeof(base_layers) === 'undefined') {
-    base_layers = {
+  if (typeof(options.map_div) === 'undefined') {
+    options.map_div = 'map_div'
+  }
+  if (typeof(options.base_layers) === 'undefined') {
+    options.base_layers = {
       "OpenStreetMap": new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+      // "Stamen Toner-Lite": L.StamenTileLayer("toner-lite")
       "CartoDB": new L.TileLayer("http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png")
     }
   }
-  if (typeof(initial_base) === 'undefined') {
-    initial_base = 'CartoDB'
+  if (typeof(options.initial_base) === 'undefined') {
+    options.initial_base = 'CartoDB'
   }
-  this.map_div = map_div
-  this.base_layers = base_layers
-  this.initial_base = initial_base
+  if (typeof(options.useLeafletLayerControl) === 'undefined') {
+    options.useLeafletLayerControl = true;
+  }
+  if (typeof(options.tv) === 'undefined') {
+    options.tv = null;
+  }
+  this.map_div = options.map_div;
+  this.base_layers = options.base_layers;
+  this.initial_base = options.initial_base;
+  this.useLeafletLayerControl = options.useLeafletLayerControl;
+  this.tv = options.tv;
+
+  if (this.tv !== null) {
+    this.tv.connectApp(this);
+  }
 
   // We'll allow users to pick "extra" (point) layers with the Leaflet layer control.
   // But we have two design forces to contend with:
@@ -59,6 +85,23 @@ function GeoApp(map_div, base_layers, initial_base) {
   this.map.on("overlayadd", this.fetchLayer.bind(this));
 }
 
+// Add the layer to the map, as specified by obj.name. (Perhaps by
+// obj.id in the future, so please insure obj has both.)  Use this if
+// not using the leaflet layer control.
+GeoApp.prototype.addLayer = function(obj)
+{
+  var name = obj.name;
+  this.map.addLayer(this.extra_layers[name].layer_obj);
+}
+
+// Remove a layer from the map, as specified by obj.name. (Perhaps by
+// obj.id in the future, so please insure obj has both.)  Use this if
+// not using the leaflet layer control.
+GeoApp.prototype.removeLayer = function(obj)
+{
+  var name = obj.name;
+  this.map.removeLayer(this.extra_layers[name].layer_obj);
+}
 
 GeoApp.prototype.zoomstart = function(evt)
 {
@@ -479,8 +522,12 @@ GeoApp.prototype.processLayerRecord = function(d)
 
   d.layer_obj = new L.geoJson(null, options)
   this.extra_layers[d.name] = d
-  this.layer_control.addOverlay(this.extra_layers[d.name].layer_obj, d.name);
-  addTreeNode(null, d.id, d.name, this, d.name, treeSelectionCallback);
+  if (this.useLeafletLayerControl) {
+    this.layer_control.addOverlay(this.extra_layers[d.name].layer_obj, d.name);
+  }
+  if (this.tv !== null) {
+    this.tv.addNode(d); // TODO: cleanup was addTree.Node(null, d.id, d.name, this, d.name, treeSelectionCallback);
+  }
 }
 
 GeoApp.prototype.loadLayers_cb = function(error, data) {
@@ -490,6 +537,9 @@ GeoApp.prototype.loadLayers_cb = function(error, data) {
     throw error
   }
   data.forEach(this.processLayerRecord.bind(this))
+  if (this.tv !== null) {
+    this.tv.addComplete()
+  }
 }
 
 GeoApp.prototype.loadLayers = function(layer_url)
