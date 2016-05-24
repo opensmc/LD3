@@ -408,7 +408,7 @@ GeoApp.prototype.processLayerRecord = function(d)
 
   var options = {}
   if (d['geomType:value'] == 'point') {
-    var size = [24, 24]
+    var size = [32, 32]
     var location = this.locationFromIconAnchor(size, d['icon:anchor'])
     console.log('location is'+location.toString())
 
