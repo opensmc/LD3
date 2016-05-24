@@ -1,22 +1,22 @@
-"type","icon:value"
-"3-8 SCHOOL","icons/Elementaryschoolish.png"
-"5-8 SCHOOL","icons/Middleschoolish.png"
-"7-12 SCHOOL","icons/Highschoolish.png"
-"7-8 SCHOOL","icons/Middleschoolish.png"
-"COLLEGE","icons/Universityish.png"
-"EDUCATIONAL FACILITY","icons/Unknown.png"
-"ELEMENTARY SCHOOL","icons/Elementaryschoolish.png"
-"HIGH SCHOOL","icons/Highschoolish.png"
-"INTERMEDIATE SCHOOL","icons/Middleschoolish.png"
-"K- 6 SCHOOL","icons/Elementaryschoolish.png"
-"K-12 SCHOOL","icons/Highschoolish.png"
-"K-4 SCHOOL","icons/Elementaryschoolish.png"
-"K-6 SCHOOL","icons/Elementaryschoolish.png"
-"K-8 SCHOOL","icons/Elementaryschoolish.png"
-"MIDDLE SCHOOL","icons/Middleschoolish.png"
-"MIDDLE/HIGH SCHOOL","icons/Highschoolish.png"
-"RELIGIOUS SCHOOL","icons/Unknown.png"
-"RELIGIOUS SCHOOL K-6","icons/Unknown.png"
-"RELIGIOUS SCHOOL K-8","icons/Unknown.png"
-"SPECIAL EDUCATION","icons/Unknown.png"
-"UNIVERSITY","icons/Universityish.png"
+type,icon:value
+3-8 SCHOOL,icons/elem_school.svg
+5-8 SCHOOL,icons/mid_school.svg
+7-12 SCHOOL,icons/hi_school.svg
+7-8 SCHOOL,icons/mid_school.svg
+COLLEGE,icons/Universityish.png
+EDUCATIONAL FACILITY,icons/Unknown.png
+ELEMENTARY SCHOOL,icons/elem_school.svg
+HIGH SCHOOL,icons/hi_school.svg
+INTERMEDIATE SCHOOL,icons/mid_school.svg
+K- 6 SCHOOL,icons/elem_school.svg
+K-12 SCHOOL,icons/hi_school.svg
+K-4 SCHOOL,icons/elem_school.svg
+K-6 SCHOOL,icons/elem_school.svg
+K-8 SCHOOL,icons/elem_school.svg
+MIDDLE SCHOOL,icons/mid_school.svg
+MIDDLE/HIGH SCHOOL,icons/hi_school.svg
+RELIGIOUS SCHOOL,icons/Unknown.png
+RELIGIOUS SCHOOL K-6,icons/Unknown.png
+RELIGIOUS SCHOOL K-8,icons/Unknown.png
+SPECIAL EDUCATION,icons/Unknown.png
+UNIVERSITY,icons/Universityish.png

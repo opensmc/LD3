@@ -155,7 +155,7 @@ GeoApp.prototype.getLabels = function(layer_name, data)
   if ('label:divclass' in this.extra_layers[layer_name]) {
     divclass = this.extra_layers[layer_name]['label:divclass']
   }
-  
+
   var obj = this.extra_layers[layer_name].layer_obj
 
   var style = ''
@@ -184,7 +184,7 @@ GeoApp.prototype.getLabels = function(layer_name, data)
 }
 
 
-GeoApp.prototype.constructGetter = function(rule) 
+GeoApp.prototype.constructGetter = function(rule)
 {
   var getter = function(feature) {
     if (typeof(feature) === 'undefined') {
@@ -257,8 +257,8 @@ GeoApp.prototype.changeLayerStyleProp = function(layer_name, cur_propname, new_p
     if (style_elem in this.extra_layers[layer_name]) {
       if ('property' in this.extra_layers[layer_name][style_elem]) {
         if (cur_propname === this.extra_layers[layer_name][style_elem]['property']) {
-          // OK, change the propname, regenerate the getter, and 
-          // mark something changed.	 
+          // OK, change the propname, regenerate the getter, and
+          // mark something changed.
 	  this.extra_layers[layer_name][style_elem]['property'] = new_propname
           this.extra_layers[layer_name][style_elem]['getter'] = this.constructGetter(this.extra_layers[layer_name][style_elem])
           changed = true
@@ -383,7 +383,7 @@ GeoApp.prototype.iconUrlFactory = function(d, self)
           iconUrl = row['icon:value']
           break
         }
-      }  
+      }
       return (iconUrl)
     }
     )
@@ -405,13 +405,13 @@ GeoApp.prototype.processLayerRecord = function(d)
 
   // trim and eliminate any blanks.
   d = removeBlanks(d)
-  
+
   var options = {}
   if (d['geomType:value'] == 'point') {
-    var size = [16, 16]
+    var size = [24, 24]
     var location = this.locationFromIconAnchor(size, d['icon:anchor'])
     console.log('location is'+location.toString())
-    
+
     iconFn = this.iconUrlFactory(d, this)
     options['name'] = d.name
     function pointToLayerFactory(iconFn, size, location) {
@@ -468,7 +468,7 @@ GeoApp.prototype.processLayerRecord = function(d)
       var url = d[mst_elem]
       if (!(url in this.mustache_templates)) {
         this.mustache_templates[url] = "TEMPLATE NOT LOADED"
-        d3.xhr(url, "text/plain", 
+        d3.xhr(url, "text/plain",
           make_xhr_closure(
             function(error, resp, props) {
               if (error) {
@@ -484,7 +484,7 @@ GeoApp.prototype.processLayerRecord = function(d)
       }
     }
   }
-  
+
   // break out style rules elements
   for (var i = 0; i < this.style_elements.length; ++i) {
     var style_elem = this.style_elements[i]
@@ -555,7 +555,7 @@ GeoApp.prototype.getStyle = function(layer_name, style_elem, feature)
   if (style_elem in this.extra_layers[layer_name]) {
     if ('value' in this.extra_layers[layer_name][style_elem]) {
       return(this.extra_layers[layer_name][style_elem]['value'])
-    } else { 
+    } else {
       return(this.extra_layers[layer_name][style_elem].scale(
         this.extra_layers[layer_name][style_elem].getter(feature)
       ))
@@ -678,8 +678,8 @@ GeoApp.prototype.addLegendShapeIndicator = function(svg, box_size, layer_name)
 GeoApp.prototype.layerPointDimensions = function(layer_name)
 {
   retval = {}
-  
-  // if this is a shape layer, skip it    
+
+  // if this is a shape layer, skip it
   if (this.extra_layers[layer_name]['geomType:value'] === 'shape') {
     return (retval)
   }
@@ -715,7 +715,7 @@ GeoApp.prototype.layerPointDimensions = function(layer_name)
 //
 // If the layer does have some dimensions (multiple icons, or
 // multiple fillColor/fillOpacity/etc) driven by data, we'll need
-// to make a key with the indicators. A key should be a single 
+// to make a key with the indicators. A key should be a single
 // property, but in icon layers it's possible to imagine picking
 // icons based on more than one property.
 //
@@ -854,6 +854,3 @@ function getCookie(cname) {
     }
     return "";
 }
-
-
-
