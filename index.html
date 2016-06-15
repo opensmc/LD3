@@ -45,9 +45,11 @@
 	</div>
 
 	<div id="surveypopup" style="display:none;">
-		<div id="surveyclose" onclick="hideSurvey();"><img width="50px" height="50px" src="images/close_icon.png"></div>
+		<div id="surveyclose" onclick="hideSurvey();">
+                     <img width="50px" height="50px" src="images/close_icon.png"></div>
 		<div id="surveycontent">
-			<iframe src="https://docs.google.com/forms/d/1nAOpc4tWtoBqdp9D9fH70WIdMdLaytESmeLfRxtoKdk/viewform?embedded=true" width="680" height="2750" frameborder="0" marginheight="0" marginwidth="0" style="background: #FFFFFF; border-radius: 15px;">Loading...</iframe>
+                        <p>Thanks for viewing the proof of concept service locator. But we need your input to know what data should be here! Please <a href="https://docs.google.com/forms/d/1nAOpc4tWtoBqdp9D9fH70WIdMdLaytESmeLfRxtoKdk/viewform">take the survey</a> to help.
+			<!-- <iframe src="https://docs.google.com/forms/d/1nAOpc4tWtoBqdp9D9fH70WIdMdLaytESmeLfRxtoKdk/viewform?embedded=true" width="680" height="480" frameborder="0" marginheight="0" marginwidth="0" style="background: #FFFFFF; border-radius: 15px;">Loading...</iframe> -->
 		</div>
 	</div>
 
@@ -70,11 +72,10 @@
 		ga.loadLayers();
 
 		var surveyCookie = getCookie("showSurvey");
-		if (surveyCookie != "false") {
-			showSurvey();
-		}
+		//if (surveyCookie != "false") {
+  		        window.setTimeout(showSurvey, 2000);
+		//}
 
 	</script>
-
 </body>
 </html>
